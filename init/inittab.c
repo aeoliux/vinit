@@ -76,7 +76,8 @@ struct inittab *parseInittab(const char *inittab) {
 			parsed->post = malloc(sizeof(struct script) * parsed->postn);
 			if (!parsed->post) parsed->postn = 0;
 		} else if (!strcmp(tokens[0], "post")) {
-			if (!parsed->post) continue;
+			if ((!parsed->post)) continue;
+			if (parsed->postn <= current_post) continue;
 
 			if (!strcmp(tokens[1], "wait")) parsed->post[current_post].type = wait;
 			else if (!strcmp(tokens[1], "oneshot")) parsed->post[current_post].type = oneshot;
@@ -85,9 +86,6 @@ struct inittab *parseInittab(const char *inittab) {
 
 			parsed->post[current_post].cmd = strdup(tokens[2]);
 			current_post++;
-			if (current_post > parsed->postn) {
-				parsed->postn = current_post;
-			}
 		}
 
 		free_tokens:

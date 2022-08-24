@@ -41,6 +41,10 @@ enum haltmode {
 #define INIT_MAX_REQUEST 255
 #endif
 
+#ifndef INITTABFILE
+#define INITTABFILE "/etc/inittab"
+#endif
+
 int main() {
 	if (getpid() != 1) {
 		return 1;
@@ -51,7 +55,7 @@ int main() {
 
 	puts("init: starting");
 
-	char *inittab = readFile("/etc/inittab");
+	char *inittab = readFile(INITTABFILE);
 	if (!inittab) {
 		goto error;
 	}

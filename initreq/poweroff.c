@@ -22,33 +22,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include <stddef.h>
-enum scripttype {
-	respawn,
-	oneshot,
-	wait,
-};
-
-struct script {
-	char *cmd;
-	enum scripttype type;
-};
-
-struct inittab {
-	char *sysinit, *shutdown, *reboot, *halt;
-
-	size_t postn;
-	struct script *post;
-};
-
-struct inittab *parseInittab(const char *inittab);
-
-char **splitString(char *buf, const char *splitter);
-char *readFile(const char *path);
-
 #include <unistd.h>
-int runShellCmd(char *const cmd);
-pid_t runAndFork(char *const cmd);
-pid_t respawnCmd(char *const cmd);
+#include <stdio.h>
 
-#define VERSION "0.1.0"
+int main() {
+	char *const args[] = {"initreq", "-s", "init_poweroff", NULL};
+	execvp(args[0], args);
+	perror("poweroff: couldn't execute 'initreq'");
+	return 1;
+}

@@ -1,0 +1,2 @@
+option('inittab-path', type: 'string', value: '/etc/inittab')
+option('maximum-init-request', type: 'integer', value: 4095)
