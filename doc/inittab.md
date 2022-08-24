@@ -7,7 +7,7 @@ shutdown:/etc/rc shutdown
 reboot:/etc/rc reboot
 halt:/etc/rc halt
 
-postn:9
+postn:8
 post:wait:echo Welcome init!
 
 post:respawn:agetty --noclear 38400 tty1 linux
@@ -39,4 +39,3 @@ Also one of the most important thing is that, before defining post scripts, you 
 ```
 postn:<number of post scripts>
 ```
-
