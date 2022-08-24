@@ -47,7 +47,7 @@ int main() {
 	}
 
 	enum haltmode halt;
-	char *shutdowncmd = NULL;
+	char *shutdowncmd = NULL, *rebootcmd = NULL, *haltcmd = NULL;
 
 	puts("init: starting");
 
@@ -76,6 +76,12 @@ int main() {
 	if (parsed->shutdown.cmd) {
 		shutdowncmd = strdup(parsed->shutdown.cmd);
 	}
+	if (parsed->reboot.cmd) {
+		rebootcmd = strdup(parsed->reboot.cmd);
+	}
+	if (parsed->halt.cmd) {
+		haltcmd = strdup(parsed->halt.cmd);
+	}
 	if ((parsed->post) && (parsed->postn)) {
 		for (size_t i = 0; i < parsed->postn; i++) {
 			switch (parsed->post[i].type) {
@@ -99,6 +105,8 @@ int main() {
 	free(parsed->post);
 	free(parsed->shutdown.cmd);
 	free(parsed->sysinit.cmd);
+	free(parsed->reboot.cmd);
+	free(parsed->halt.cmd);
 	free(parsed);
 
 	if (mkfifo("/run/initctl", 0644)) {
@@ -155,25 +163,36 @@ int main() {
 	puts("init: starting halting procedure");
 	unlink("/run/initctl");
 
-	if (shutdowncmd) {
-		if (runShellCmd(shutdowncmd)) {
-			fputs("init: shutdown script returned non-zero exit status\n", stderr);
-		}
-		free(shutdowncmd);
-	}
-
 	switch (halt) {
 		case Reboot: {
+			if (rebootcmd) {
+				if (runShellCmd(rebootcmd)) {
+					fputs("init: reboot script returned non-zero exit status\n", stderr);
+				}
+				free(rebootcmd);
+			}
 			reboot(RB_AUTOBOOT);
 			perror("init: failed to reboot");
 			goto infiniteloop;
 		}
 		case Shutdown: {
+			if (shutdowncmd) {
+				if (runShellCmd(shutdowncmd)) {
+					fputs("init: shutdown script returned non-zero exit status\n", stderr);
+				}
+				free(shutdowncmd);
+			}
 			reboot(RB_POWER_OFF);
 			perror("init: failed to poweroff");
 			goto infiniteloop;
 		}
 		case Halt: {
+			if (haltcmd) {
+				if (runShellCmd(haltcmd)) {
+					fputs("init: halting script returned non-zero exit status\n", stderr);
+				}
+				free(haltcmd);
+			}
 			reboot(RB_HALT_SYSTEM);
 			perror("init: failed to halt system");
 			goto infiniteloop;

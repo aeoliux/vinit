@@ -36,6 +36,8 @@ struct inittab *parseInittab(const char *inittab) {
 	}
 	parsed->sysinit.cmd = NULL;
 	parsed->shutdown.cmd = NULL;
+	parsed->reboot.cmd = NULL;
+	parsed->halt.cmd = NULL;
 	parsed->post = NULL;
 	parsed->postn = 0;
 
@@ -64,6 +66,10 @@ struct inittab *parseInittab(const char *inittab) {
 			parsed->sysinit.cmd = strdup(tokens[1]);
 		} else if (!strcmp(tokens[0], "shutdown")) {
 			parsed->shutdown.cmd = strdup(tokens[1]);
+		} else if (!strcmp(tokens[0], "reboot")) {
+			parsed->reboot.cmd = strdup(tokens[1]);
+		} else if (!strcmp(tokens[0], "halt")) {
+			parsed->halt.cmd = strdup(tokens[1]);
 		} else if (!strcmp(tokens[0], "postn")) {
 			sscanf(tokens[1], "%lu", &parsed->postn);
 
