@@ -34,10 +34,10 @@ struct inittab *parseInittab(const char *inittab) {
 		perror("init: failed to allocate structure");
 		return NULL;
 	}
-	parsed->sysinit.cmd = NULL;
-	parsed->shutdown.cmd = NULL;
-	parsed->reboot.cmd = NULL;
-	parsed->halt.cmd = NULL;
+	parsed->sysinit = NULL;
+	parsed->shutdown = NULL;
+	parsed->reboot = NULL;
+	parsed->halt = NULL;
 	parsed->post = NULL;
 	parsed->postn = 0;
 
@@ -63,13 +63,13 @@ struct inittab *parseInittab(const char *inittab) {
 			return NULL;
 		}
 		if (!strcmp(tokens[0], "sysinit")) {
-			parsed->sysinit.cmd = strdup(tokens[1]);
+			parsed->sysinit = strdup(tokens[1]);
 		} else if (!strcmp(tokens[0], "shutdown")) {
-			parsed->shutdown.cmd = strdup(tokens[1]);
+			parsed->shutdown = strdup(tokens[1]);
 		} else if (!strcmp(tokens[0], "reboot")) {
-			parsed->reboot.cmd = strdup(tokens[1]);
+			parsed->reboot = strdup(tokens[1]);
 		} else if (!strcmp(tokens[0], "halt")) {
-			parsed->halt.cmd = strdup(tokens[1]);
+			parsed->halt = strdup(tokens[1]);
 		} else if (!strcmp(tokens[0], "postn")) {
 			sscanf(tokens[1], "%lu", &parsed->postn);
 

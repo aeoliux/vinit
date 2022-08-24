@@ -35,10 +35,7 @@ struct script {
 };
 
 struct inittab {
-	struct script sysinit;
-	struct script shutdown;
-	struct script reboot;
-	struct script halt;
+	char *sysinit, *shutdown, *reboot, *halt;
 
 	size_t postn;
 	struct script *post;

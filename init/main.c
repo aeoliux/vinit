@@ -63,9 +63,9 @@ int main() {
 	}
 	free(inittab);
 
-	if (parsed->sysinit.cmd) {
+	if (parsed->sysinit) {
 		puts("init: entering 'sysinit'");
-		if (runShellCmd(parsed->sysinit.cmd)) {
+		if (runShellCmd(parsed->sysinit)) {
 			fputs("init: failed to sysinit\n", stderr);
 			goto error;
 		}
@@ -73,14 +73,14 @@ int main() {
 		fputs("init: sysinit hasn't been defined\n", stderr);
 		goto error;
 	}
-	if (parsed->shutdown.cmd) {
-		shutdowncmd = strdup(parsed->shutdown.cmd);
+	if (parsed->shutdown) {
+		shutdowncmd = strdup(parsed->shutdown);
 	}
-	if (parsed->reboot.cmd) {
-		rebootcmd = strdup(parsed->reboot.cmd);
+	if (parsed->reboot) {
+		rebootcmd = strdup(parsed->reboot);
 	}
-	if (parsed->halt.cmd) {
-		haltcmd = strdup(parsed->halt.cmd);
+	if (parsed->halt) {
+		haltcmd = strdup(parsed->halt);
 	}
 	if ((parsed->post) && (parsed->postn)) {
 		for (size_t i = 0; i < parsed->postn; i++) {
@@ -103,10 +103,10 @@ int main() {
 
 	for (size_t i = 0; i < parsed->postn; i++) free(parsed->post[i].cmd);
 	free(parsed->post);
-	free(parsed->shutdown.cmd);
-	free(parsed->sysinit.cmd);
-	free(parsed->reboot.cmd);
-	free(parsed->halt.cmd);
+	free(parsed->shutdown);
+	free(parsed->sysinit);
+	free(parsed->reboot);
+	free(parsed->halt);
 	free(parsed);
 
 	if (mkfifo("/run/initctl", 0644)) {
