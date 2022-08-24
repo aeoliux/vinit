@@ -116,7 +116,7 @@ int runShellCmd(char *const cmd) {
 			perror("init: waitpid() failed");
 			return -1;
 		}
-	} while (!WIFEXITED(status));
+	} while (!WIFEXITED(status) && !WIFSIGNALED(status));
 
 	return WEXITSTATUS(status);
 }
