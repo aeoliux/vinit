@@ -112,7 +112,7 @@ int runShellCmd(char *const cmd) {
 
 	int status;
 	do {
-		if (waitpid(f, &status, WUNTRACED | WNOHANG)) {
+		if (waitpid(f, &status, WUNTRACED) == -1) {
 			perror("init: waitpid() failed");
 			return -1;
 		}
