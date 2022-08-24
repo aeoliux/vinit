@@ -67,7 +67,7 @@ struct inittab *parseInittab(const char *inittab) {
 		} else if (!strcmp(tokens[0], "postn")) {
 			sscanf(tokens[1], "%lu", &parsed->postn);
 
-			parsed->post = malloc(sizeof(struct script) * (parsed->postn + 1));
+			parsed->post = malloc(sizeof(struct script) * parsed->postn);
 			if (!parsed->post) parsed->postn = 0;
 		} else if (!strcmp(tokens[0], "post")) {
 			if (!parsed->post) continue;
