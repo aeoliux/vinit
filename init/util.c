@@ -36,8 +36,7 @@ char **splitString(char *buf, const char *splitter) {
 		errno = EINVAL;
 		return NULL;
 	}
-	size_t baseSize = 1;
-	char **ret = malloc(baseSize * sizeof(char *));
+	char **ret = malloc(1 * sizeof(char *));
 	if (!ret) return NULL;
 
 	size_t currentIndex = 0;
@@ -45,14 +44,13 @@ char **splitString(char *buf, const char *splitter) {
 	while (token) {
 		ret[currentIndex] = strdup(token);
 
-		currentIndex++;
-		if (currentIndex == baseSize) {
-			ret = realloc(ret, baseSize + 1);
-			if (!ret) return NULL;
-
-			baseSize++;
-		}
 		token = strtok(NULL, splitter);
+
+		currentIndex++;
+		ret = realloc(ret, currentIndex + 1);
+		if (!ret) {
+			return NULL;
+		}
 	}
 	ret[currentIndex] = NULL;
 
