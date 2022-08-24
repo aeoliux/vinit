@@ -7,3 +7,4 @@ initsrc = [
 ]
 
 init = executable('init', initsrc, install: true)
+initreq = executable('initreq', 'initreq/initreq.c', install: true)

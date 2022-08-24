@@ -142,6 +142,10 @@ int main() {
 				halt = Halt;
 				close(fd);
 				goto halt;
+			} else if (!strncmp(request, "init_getProps", n)) {
+				if (shutdowncmd) printf("init: shutdown command '%s'\n", shutdowncmd);
+				if (rebootcmd) printf("init: reboot command '%s'\n", rebootcmd);
+				if (haltcmd) printf("init: halt command '%s'\n", haltcmd);
 			}
 		}
 	}
