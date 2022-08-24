@@ -37,5 +37,5 @@ For methods we have:
 <br />
 Also one of the most important thing is that, before defining post scripts, you must tell to init how many post scripts you want to execute. Definition of this is:
 ```
-postn:\<number of post scripts>\
+postn:(number of post scripts)
 ```
