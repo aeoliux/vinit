@@ -32,7 +32,7 @@ post:<method>:<command>
 ```
 For methods we have:
 - **wait** - is used when init must wait before command finishes,
-- **respawn** - is used when init have to always reexecute command if it fails,
+- **respawn** - is used when init have to always reexecute command if it stops (useful for TTY spawning),
 - **oneshot** - is used when command have to be just executed and init doesn't have to wait for and watch it.
 <br />
 Also one of the most important thing is that, before defining post scripts, you must tell to init how many post scripts you want to execute. Definition of this is: 
