@@ -74,7 +74,7 @@ int main() {
 		goto error;
 	}
 	if (parsed->shutdown.cmd) {
-		shutdowncmd = parsed->shutdown.cmd;
+		shutdowncmd = strdup(parsed->shutdown.cmd);
 	}
 	if ((parsed->post) && (parsed->postn)) {
 		for (size_t i = 0; i < parsed->postn; i++) {
@@ -155,8 +155,11 @@ int main() {
 	puts("init: starting halting procedure");
 	unlink("/run/initctl");
 
-	if (runShellCmd(shutdowncmd)) {
-		fputs("init: shutdown script returned non-zero exit status\n", stderr);
+	if (shutdowncmd) {
+		if (runShellCmd(shutdowncmd)) {
+			fputs("init: shutdown script returned non-zero exit status\n", stderr);
+		}
+		free(shutdowncmd);
 	}
 
 	switch (halt) {
