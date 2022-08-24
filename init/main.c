@@ -127,7 +127,7 @@ int main() {
 				unlink("/run/initctl");
 				perror("init: failed to read from '/run/initctl'");
 				goto infiniteloop;
-			}
+			} else if (n == 0) continue;
 
 			if (!strcmp(request, "init_poweroff")) {
 				halt = Shutdown;
