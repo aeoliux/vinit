@@ -129,20 +129,20 @@ int main() {
 				goto infiniteloop;
 			}
 
-			if (!strncmp(request, "init_poweroff", n)) {
+			if (!strcmp(request, "init_poweroff")) {
 				halt = Shutdown;
 				close(fd);
 				unlink("/run/initctl");
 				goto halt;
-			} else if (!strncmp(request, "init_reboot", n)) {
+			} else if (!strcmp(request, "init_reboot")) {
 				halt = Reboot;
 				close(fd);
 				goto halt;
-			} else if (!strncmp(request, "init_halt", n)) {
+			} else if (!strcmp(request, "init_halt")) {
 				halt = Halt;
 				close(fd);
 				goto halt;
-			} else if (!strncmp(request, "init_getProps", n)) {
+			} else if (!strcmp(request, "init_getProps")) {
 				if (shutdowncmd) printf("init: shutdown command '%s'\n", shutdowncmd);
 				if (rebootcmd) printf("init: reboot command '%s'\n", rebootcmd);
 				if (haltcmd) printf("init: halt command '%s'\n", haltcmd);
