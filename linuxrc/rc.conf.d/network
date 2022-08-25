@@ -1,3 +1,5 @@
+#!/bin/sh
+
 #
 #MIT License
 #
@@ -22,16 +24,18 @@
 #SOFTWARE.
 #
 
-# Set it to any value if you want to mount tmpfs on /tmp, unless you want, comment line below (use # character)
-MOUNT_TMPFS=1
-
-# Set system hostname
-HOSTNAME=localhost
-
-# hwclock - available options:
-# UTC - set system clock from device hardware clock
-# localtime - set system clock to device hardware clock + timezone
-HWCLOCK=UTC
-
-# Services to start
-SERVICES="udevd"
+### Example network configuration
+# static:
+#
+#interfaces="eth0 eth1"
+#types="eth0-static eth1-static"
+#
+#ifconfig="eth0-192.168.1.2 eth1-192.168.8.2"
+#routes="eth0-192.168.1.1 eth1-192.168.8.1"
+#netmasks="eth0-255.255.255.0 eth1-255.255.255.0"
+#dns_servers="192.168.1.1 192.168.8.1"
+#
+# dhcp:
+#USE_DHCP=1
+# or:
+#types="eth0-dhcp eth1-dhcp"
