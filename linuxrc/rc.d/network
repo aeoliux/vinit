@@ -87,6 +87,10 @@ case "${1}" in
 								break
 							fi
 						done
+						if [ -d /sys/class/net/${int} ]; then
+							echo "> ${int} network interface doesn't exists" > /dev/stderr
+							exit 1
+						fi
 					fi
 					echo "> Setting up static network configuration for ${int}"
 					ifconfig ${int} up
