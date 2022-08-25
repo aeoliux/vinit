@@ -79,6 +79,15 @@ case "${1}" in
 						echo "> Network configuration is invalid" > /dev/stderr
 						exit 1
 					fi
+					if [ ! -d /sys/class/net/${int} ]; then
+						echo "> Waiting 10 seconds for ${int} interface"
+						for count in 1 2 3 4 5 6 7 8 9 10; do
+							sleep 1
+							if [ -d /sys/class/net/${int} ]; then
+								break
+							fi
+						done
+					fi
 					echo "> Setting up static network configuration for ${int}"
 					ifconfig ${int} up
 					ifconfig ${int} ${ip} netmask ${netmask}

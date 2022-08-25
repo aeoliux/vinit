@@ -38,4 +38,5 @@
 # dhcp:
 #USE_DHCP=1
 # or:
+#interfaces="eth0 eth1"
 #types="eth0-dhcp eth1-dhcp"
