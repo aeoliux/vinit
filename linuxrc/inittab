@@ -1,0 +1,12 @@
+sysinit:/etc/rc.sh
+shutdown:/etc/rc.halt.sh
+reboot:/etc/rc.halt.sh
+halt:/etc/rc.halt.sh
+
+postn:6
+post:respawn:agetty --noclear 38400 tty1 linux
+post:respawn:agetty 38400 tty2 linux
+post:respawn:agetty 38400 tty3 linux
+post:respawn:agetty 38400 tty4 linux
+post:respawn:agetty 38400 tty5 linux
+post:respawn:agetty 38400 tty6 linux
