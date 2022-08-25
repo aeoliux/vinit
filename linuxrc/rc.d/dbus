@@ -1,3 +1,5 @@
+#!/bin/sh
+
 #
 #MIT License
 #
@@ -22,16 +24,38 @@
 #SOFTWARE.
 #
 
-# Set it to any value if you want to mount tmpfs on /tmp, unless you want, comment line below (use # character)
-MOUNT_TMPFS=1
+set -e
 
-# Set system hostname
-HOSTNAME=localhost
+machineid() {
+	[ -f /etc/machine-id ] && rm /etc/machine-id
+	[ -f /var/lib/dbus/machine-id ] && rm /var/lib/dbus/machine-id
 
-# hwclock - available options:
-# UTC - set system clock from device hardware clock
-# localtime - set system clock to device hardware clock + timezone
-HWCLOCK=UTC
+	set +e
+	[ -x /usr/bin/dbus-uuidgen ] && dbus-uuidgen --ensure
+	set -e
+}
 
-# Services to start
-SERVICES="udevd dbus"
+case "${1}" in
+	start)
+		machineid
+
+		mkdir -p /run/dbus
+		dbus-daemon --system --fork
+		;;
+	stop)
+		set +e
+		killall dbus-daemon
+		set -e
+
+		rm -rf /run/dbus
+		;;
+	restart)
+		${0} stop
+		${0} start
+		;;
+	reload)
+		machineid
+		set +e
+		dbus-send --print-reply --system --type=method_call --dest=org.freedesktop.DBus / org.freedesktop.DBus.ReloadConfig
+		;;
+esac
