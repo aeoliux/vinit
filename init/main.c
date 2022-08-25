@@ -138,6 +138,9 @@ int main() {
 				close(fd);
 				unlink("/run/initctl");
 				goto halt;
+			} else if (!strcmp(request, "init_reboot\nhard")) {
+				reboot(RB_AUTOBOOT);
+				perror("init: failed to hard reboot");
 			} else if (!strcmp(request, "init_reboot")) {
 				halt = Reboot;
 				close(fd);
