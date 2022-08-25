@@ -20,12 +20,16 @@ harderror() {
 echo "=> Mounting virtual filesystems"
 mount -n -t proc proc /proc
 
-mount -n -t devtmpfs devtmpfs /dev
-mkdir -n -p /dev/pts /dev/shm
+if ! mountpoint /dev > /dev/null 2>&1; then
+	mount -n -t devtmpfs devtmpfs /dev
+fi
+mkdir -p /dev/pts /dev/shm
 mount -n -t devpts devpts /dev/pts
 mount -n -t tmpfs shm /dev/shm
 
-mount -n -t sysfs sysfs /sys
+if ! mountpoint /sys > /dev/null 2>&1; then
+	mount -n -t sysfs sysfs /sys
+fi
 mount -t tmpfs run /run
 
 if grep -wq cgroup /proc/filesystems; then

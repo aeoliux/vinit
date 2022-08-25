@@ -22,14 +22,14 @@ if [ -n "${SERVICES}" ]; then
 	done
 fi
 
+echo "=> Syncing disks"
+sync
+
 echo "=> Disabling swap"
 swapoff -a
 
 echo "=> Unmounting filesystems"
 umount -a
-
-echo "=> Syncing disks"
-sync
 
 echo "=> Remounting rootfs as read-only"
 mount -o ro,remount /
