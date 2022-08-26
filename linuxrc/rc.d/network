@@ -131,7 +131,13 @@ case "${1}" in
 			case "${type}" in
 				static)
 					echo "> Disabling network on ${int} interface"
+					route=$(getitem ${routes} ${int})
+					ip=$(getitem ${ifconfig} ${int})
+
+					ifconfig ${int} delete ${ip}
+					route del default gw ${route} ${int}
 					ifconfig ${int} down
+
 					[ -f /etc/resolv.conf ] && rm /etc/resolv.conf
 					;;
 				dhcp)

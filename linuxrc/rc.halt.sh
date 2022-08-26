@@ -46,14 +46,6 @@ if [ -n "${SERVICES}" ]; then
 	done
 fi
 
-if [ -w /proc/sysrq-trigger ]; then
-	echo "=> Sending SIGKILL to all processes"
-	echo "i" > /proc/sysrq-trigger
-
-	echo "=> Sending SIGTERM to all processes"
-	echo "e" > /proc/sysrq-trigger
-fi
-
 echo "=> Syncing disks"
 sync
 
@@ -65,3 +57,8 @@ umount -a
 
 echo "=> Remounting rootfs as read-only"
 mount -o ro,remount /
+
+if [ -w /proc/sysrq-trigger ]; then
+	echo "=> Sending SIGTERM to all processes"
+	echo "e" > /proc/sysrq-trigger
+fi
