@@ -67,7 +67,7 @@ types="eth0-dhcp"
 types="eth0-static"
 ```
 
-If you manage to use the `dhcp` option, it is all for you. When you run `network` service, it will run dhcp client on that interface and network will be configured.
+If you manage to use the `dhcp` option, it is all what you have to do. When you run `network` service, it will run dhcp client on that interface and network will be configured.
 Next sections are only for users, who want static network connection.
 
 #### `ifconfig`
