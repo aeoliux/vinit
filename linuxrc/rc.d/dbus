@@ -28,7 +28,8 @@ set -e
 
 machineid() {
 	[ -f /etc/machine-id ] && rm /etc/machine-id
-	[ -f /var/lib/dbus/machine-id ] && rm /var/lib/dbus/machine-id
+	[ -f /var/lib/dbus/machine-id ] && rm -rf /var/lib/dbus/machine-id
+	mkdir -p /var/lib/dbus
 
 	set +e
 	[ -x /usr/bin/dbus-uuidgen ] && dbus-uuidgen --ensure

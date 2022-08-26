@@ -26,10 +26,10 @@
 
 set -e
 
-if [ -r /usr/etc/rc.conf.d/network ]; then
-	. /usr/etc/rc.conf.d/network
-elif [ -r /etc/rc.conf.d/network ]; then
-	. /etc/rc.conf.d/network
+if [ -r /usr/etc/rc.conf.d/network.conf ]; then
+	. /usr/etc/rc.conf.d/network.conf
+elif [ -r /etc/rc.conf.d/network.conf ]; then
+	. /etc/rc.conf.d/network.conf
 else
 	echo "network configuration file doesn't exists. Cannot continue" > /dev/stderr
 	exit 1
