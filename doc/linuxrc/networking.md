@@ -55,7 +55,8 @@ Very important thing is that, all next options use this syntax `<interface>-<opt
 
 For options we have:
 - **dhcp** - dynamic network connection,
-- **static** - static network connection,
+- **static** - static network connection,<br />
+
 In my case:
 - For dynamic connection:
 ```conf
