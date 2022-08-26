@@ -37,7 +37,7 @@ if [ -n "${SERVICES}" ]; then
 	echo "=> Stopping services"
 	reverse=""
 	for i in ${SERVICES}; do
-		reverse="${reverse} ${i}"
+		reverse="${i} ${reverse}"
 	done
 
 	for i in ${reverse}; do
