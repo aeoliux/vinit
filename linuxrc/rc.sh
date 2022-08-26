@@ -117,6 +117,14 @@ if [ -n "${HOSTNAME}" ]; then
 	hostname ${HOSTNAME}
 fi
 
+if [ -n "${KEYMAP}" ]; then
+	echo "=> Loading keymap ${KEYMAP}"
+	if [ -w /proc/sys/dev/mac_hid/keyboard_sends_linux_keycodes ]; then
+		echo 1 > /proc/sys/dev/mac_hid/keyboard_sends_linux_keycodes
+	fi
+	loadkeys ${KEYMAP}
+fi
+
 [ -f /etc/mtab ] && rm /etc/mtab
 echo "=> Linking mtab"
 ln -s /proc/self/mounts /etc/mtab
