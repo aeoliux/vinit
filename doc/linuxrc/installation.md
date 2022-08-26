@@ -12,7 +12,7 @@
 1. Enter to vinit source code root directory,
 2. Run commands:
 ```sh
-install -m755 linuxrc/rc.sh linuxrc/rc.halt.sh /etc
+install -m755 linuxrc/rc.sh linuxrc/rc.halt.sh linuxrc/rc.conf /etc
 install -m644 linuxrc/inittab /etc
 ```
 
