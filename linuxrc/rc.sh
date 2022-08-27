@@ -41,18 +41,22 @@ harderror() {
 	initreq -s init_reboot -o hard
 }
 
+mount_devtmpfs() {
+	echo "=> Mounting /dev"
+	[ -z $DEVTMPFS_NAME ] && DEVTMPFS_NAME=devtmpfs
+	if ! mountpoint /dev > /dev/null 2>&1; then
+		umount -lf /dev
+	fi
+	mount -t devtmpfs ${DEVTMPFS_NAME} /dev
+
+	echo "=> Mounting /dev/pts and /dev/shm"
+	mkdir -p /dev/pts /dev/shm
+	mount -n -t devpts devpts /dev/pts
+	mount -n -t tmpfs shm /dev/shm
+}
+
 echo "=> Mounting virtual filesystems"
 mount -n -t proc proc /proc
-
-[ -z $DEVTMPFS_NAME ] && DEVTMPFS_NAME=devtmpfs
-if ! mountpoint /dev > /dev/null 2>&1; then
-	umount -lf /dev
-fi
-mount -t devtmpfs ${DEVTMPFS_NAME} /dev
-
-mkdir -p /dev/pts /dev/shm
-mount -n -t devpts devpts /dev/pts
-mount -n -t tmpfs shm /dev/shm
 
 if ! mountpoint /sys > /dev/null 2>&1; then
 	mount -n -t sysfs sysfs /sys
@@ -107,6 +111,8 @@ elif [ -x /usr/etc/rc.conf ]; then
 	echo "=> Loading rc configuration"
 	. /usr/etc/rc.conf
 fi
+
+mount_devtmpfs
 
 if [ -n "${MOUNT_TMPFS}" ]; then
 	mount -t tmpfs tmpfs /tmp
