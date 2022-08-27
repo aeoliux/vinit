@@ -38,7 +38,7 @@ machineid() {
 
 case "${1}" in
 	start)
-		if vinit-daemonutil -C dbus > /dev/null; then
+		if vinit-daemonutil -C dbus > /dev/null 2>&1; then
 			echo "dbus has already been started" > /dev/stderr
 			exit 1
 		fi
@@ -48,7 +48,7 @@ case "${1}" in
 		vinit-daemonutil -n dbus -S dbus-daemon -- --system --nofork
 		;;
 	stop)
-		if ! vinit-daemonutil -C dbus > /dev/null; then
+		if ! vinit-daemonutil -C dbus > /dev/null 2>&1; then
 			echo "dbus isn't running" > /dev/stderr
 			exit 1
 		fi
@@ -63,7 +63,7 @@ case "${1}" in
 		${0} start
 		;;
 	reload)
-		if ! vinit-daemonutil -C dbus > /dev/null; then
+		if ! vinit-daemonutil -C dbus > /dev/null 2>&1; then
 			echo "dbus isn't running" > /dev/stderr
 			exit 1
 		fi
