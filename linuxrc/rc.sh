@@ -65,6 +65,11 @@ if grep -wq cgroup /proc/filesystems; then
 	fi
 fi
 
+echo "=> Linking stdin, stdout and stderr"
+ln -sf /proc/self/fd/0 /dev/stdin
+ln -sf /proc/self/fd/1 /dev/stdout
+ln -sf /proc/self/fd/2 /dev/stderr
+
 if [ -x /etc/rc.conf ]; then
 	echo "=> Loading rc configuration"
 	. /etc/rc.conf
