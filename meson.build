@@ -20,3 +20,12 @@ initreq = executable('initreq', 'initreq/initreq.c', install: true)
 reboot = executable('reboot', 'initreq/reboot.c', install: true)
 poweroff = executable('poweroff', 'initreq/poweroff.c', install: true)
 halt = executable('halt', 'initreq/halt.c', install: true)
+
+daemonutilsrc = [
+	'vinit-daemonutil/checkpid.c',
+	'vinit-daemonutil/main.c',
+	'vinit-daemonutil/start.c',
+	'vinit-daemonutil/stop.c',
+	'vinit-daemonutil/util.c'
+]
+vinit_daemonutil = executable('vinit-daemonutil', daemonutilsrc, install: true)

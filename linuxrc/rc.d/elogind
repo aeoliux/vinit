@@ -23,52 +23,30 @@
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #SOFTWARE.
 #
-
 set -e
-
-machineid() {
-	[ -f /etc/machine-id ] && rm /etc/machine-id
-	[ -f /var/lib/dbus/machine-id ] && rm -rf /var/lib/dbus/machine-id
-	mkdir -p /var/lib/dbus
-
-	set +e
-	[ -x /usr/bin/dbus-uuidgen ] && dbus-uuidgen --ensure
-	set -e
-}
 
 case "${1}" in
 	start)
-		if vinit-daemonutil -C dbus > /dev/null; then
-			echo "dbus has already been started" > /dev/stderr
+		if ! vinit-daemonutil -C dbus > /dev/null; then
+			echo "	-> starting dbus"
+			/etc/rc.d/dbus start
+		fi
+		if vinit-daemonutil -C elogind > /dev/null; then
+			echo "elogind has already started" > /dev/stderr
 			exit 1
 		fi
-		machineid
-
-		mkdir -p /run/dbus
-		vinit-daemonutil -n dbus -S dbus-daemon -- --system --nofork
+		vinit-daemonutil -n elogind -S /lib/elogind/elogind
 		;;
 	stop)
-		if ! vinit-daemonutil -C dbus > /dev/null; then
-			echo "dbus isn't running" > /dev/stderr
+		if ! vinit-daemonutil -C elogind > /dev/null; then
+			echo "elogind isn't running" > /dev/stderr
 			exit 1
 		fi
-		set +e
-		vinit-daemonutil -X dbus
-		set -e
-
-		rm -rf /run/dbus
+		
+		vinit-daemonutil -X elogind
 		;;
 	restart)
 		${0} stop
 		${0} start
-		;;
-	reload)
-		if ! vinit-daemonutil -C dbus > /dev/null; then
-			echo "dbus isn't running" > /dev/stderr
-			exit 1
-		fi
-		machineid
-		set +e
-		dbus-send --print-reply --system --type=method_call --dest=org.freedesktop.DBus / org.freedesktop.DBus.ReloadConfig
 		;;
 esac
