@@ -37,6 +37,13 @@ case "${1}" in
 		udevadm control --stop
 		vinit-daemonutil -X udevd
 		;;
+	status)
+		if vinit-daemonutil -C udevd > /dev/null 2>&1; then
+			echo "udevd is running"
+		else
+			echo "udevd isn't running"
+		fi
+		;;
 	restart)
 		${0} stop
 		${0} start

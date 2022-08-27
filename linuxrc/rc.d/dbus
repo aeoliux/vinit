@@ -50,6 +50,13 @@ case "${1}" in
 
 		rm -rf /run/dbus
 		;;
+	status)
+		if vinit-daemonutil -C dbus > /dev/null 2>&1; then
+			echo "dbus is running"
+		else
+			echo "dbus isn't running"
+		fi
+		;;
 	restart)
 		${0} stop
 		${0} start

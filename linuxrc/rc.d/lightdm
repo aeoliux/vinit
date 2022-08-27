@@ -24,25 +24,26 @@
 #SOFTWARE.
 #
 
-# elogind MUST BE STARTED BEFORE DBUS TO WORK
 set -e
+
+[ -x /etc/rc.conf.d/lightdm.conf ] && . /etc/rc.conf.d/lightdm.conf
 
 case "${1}" in
 	start)
-		vinit-daemonutil -n elogind -S vinit-logger -- -L /var/log/services/elogind.log /lib/elogind/elogind
+		vinit-daemonutil -n lightdm -S vinit-logger -- -L /var/log/services/lightdm.log lightdm -- ${LIGHTDM_OPTS}
 		;;
 	stop)
-		vinit-daemonutil -X elogind
+		vinit-daemonutil -X lightdm
 		;;
 	status)
-		if vinit-daemonutil -C elogind > /dev/null 2>&1; then
-			echo "elogind is running"
+		if vinit-daemonutil -C lightdm > /dev/null 2>&1; then
+			echo "lightdm is running"
 		else
-			echo "elogind isn't running"
+			echo "lightdm isn't running"
 		fi
 		;;
 	restart)
 		${0} stop
-		${0} start
+		${1} start
 		;;
 esac

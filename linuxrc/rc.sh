@@ -80,6 +80,8 @@ if grep -wq cgroup /proc/filesystems && [ -d /sys/fs/cgroup ]; then
 	mkdir -p hugetlb && mount -t cgroup -o hugetlb hugetlb hugetlb
 	mkdir -p pids && mount -t cgroup -o pids pids pids
 	mkdir -p rdma && mount -t cgroup -o rdma rdma rdma
+
+	cd /
 fi
 if grep -wq efivarfs /proc/filesystems && [ -d /sys/firmware/efi/efivars ]; then
 	echo "=> Mounting efivarfs"
@@ -180,8 +182,17 @@ if [ -x /sbin/sysctl -a -r /etc/sysctl.conf ]; then
 fi
 
 if [ -n "${SERVICES}" ]; then
-	echo "=> Creating services' log directory"
-	mkdir -p /var/log/services
+	if [ -d /var/log/services ]; then
+		echo "=> Saving old logs"
+		for log in $(find . -type f -name '*.log'); do
+			[ -f "${log}.old" ] && rm -f "${log}.old"
+			mv "${log}" "${log}.old"
+		done
+	else
+		echo "=> Creating directory for services' logs"
+		mkdir -p /var/log/services
+	fi
+
 	echo "=> Starting services"
 	for serv in ${SERVICES}; do
 		echo "	-> starting ${serv}"
