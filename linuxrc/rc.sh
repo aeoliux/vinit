@@ -140,6 +140,8 @@ if [ -x /sbin/sysctl -a -r /etc/sysctl.conf ]; then
 fi
 
 if [ -n "${SERVICES}" ]; then
+	echo "=> Creating services' log directory"
+	mkdir -p /var/log/services
 	echo "=> Starting services"
 	for serv in ${SERVICES}; do
 		echo "	-> starting ${serv}"

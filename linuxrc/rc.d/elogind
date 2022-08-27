@@ -29,7 +29,7 @@ set -e
 
 case "${1}" in
 	start)
-		vinit-daemonutil -n elogind -S /lib/elogind/elogind
+		vinit-daemonutil -n elogind -S vinit-logger -- -L /var/log/services/elogind.log /lib/elogind/elogind
 		;;
 	stop)
 		vinit-daemonutil -X elogind

@@ -41,7 +41,7 @@ case "${1}" in
 		machineid
 
 		mkdir -p /run/dbus
-		vinit-daemonutil -n dbus -S dbus-daemon -- --system --nofork
+		vinit-daemonutil -n dbus -S vinit-logger -- -L /var/log/services/dbus.log dbus-daemon --system --nofork
 		;;
 	stop)
 		set +e

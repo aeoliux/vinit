@@ -6,7 +6,7 @@
 - ifconfig, route (for static network connection)
 - dhcpcd (for dynamic network connection)
 - vinit (vinit linuxrc can be used with SysVinit, but it's recommended to use it with vinit compiled with `/` prefix)
-- vinit-daemonutil
+- vinit-daemonutil and vinit-logger
 - agetty (POSIX getty can be used, if `/sbin/agetty` is symlink to `/sbin/getty` or by fixing `/etc/inittab`)
 
 ## Installation
