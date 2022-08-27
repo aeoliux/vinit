@@ -27,18 +27,18 @@ set -e
 
 case "${1}" in
 	start)
-		if ! vinit-daemonutil -C dbus > /dev/null 2>&1; then
-			echo "	-> starting dbus"
-			/etc/rc.d/dbus start
-		fi
-		if vinit-daemonutil -C elogind > /dev/null 2>&1; then
+		if [ -f /run/elogind.pid ]; then
 			echo "elogind has already started" > /dev/stderr
 			exit 1
+		fi
+		if [ ! -f /run/dbus.pid ]; then
+			echo "	-> starting dbus"
+			/etc/rc.d/dbus start
 		fi
 		vinit-daemonutil -n elogind -S /lib/elogind/elogind
 		;;
 	stop)
-		if ! vinit-daemonutil -C elogind > /dev/null 2>&1; then
+		if [ ! -f /run/elogind.pid ]; then
 			echo "elogind isn't running" > /dev/stderr
 			exit 1
 		fi

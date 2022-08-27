@@ -28,7 +28,7 @@ set -e
 
 case "${1}" in
 	start)
-		if vinit-daemonutil -C udevd > /dev/null 2>&1; then
+		if [ -f /run/udevd.pid ]; then
 			echo "udevd has already started" > /dev/stderr
 			exit 1
 		fi
@@ -39,7 +39,7 @@ case "${1}" in
 		udevadm trigger --type=devices --action=add
 		;;
 	stop)
-		if ! vinit-daemonutil -C udevd > /dev/null 2>&1; then
+		if [ ! -f /run/udevd.pid ]; then
 			echo "udevd hasn't already started" > /dev/stderr
 			exit 1
 		fi
