@@ -29,6 +29,7 @@ set -e
 case "${1}" in
 	start)
 		vinit-daemonutil -n udevd -S vinit-logger -- -L /var/log/services/udevd.log udevd
+		sleep 1
 		udevadm control --start
 		udevadm trigger
 		udevadm trigger --type=subsystems --action=add
