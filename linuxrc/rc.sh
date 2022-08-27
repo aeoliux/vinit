@@ -127,6 +127,9 @@ mount -a
 echo "=> Enabling swaps"
 swapon -a
 
+echo "=> Touching /var/run/utmp"
+touch /var/run/utmp
+
 if [ -n "${HWCLOCK}" ]; then
 	if [ -x /sbin/hwclock ]; then
 		echo "=> Setting system time from hardware clock"
