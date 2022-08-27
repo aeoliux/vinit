@@ -44,7 +44,7 @@ harderror() {
 mount_devtmpfs() {
 	echo "=> Mounting /dev"
 	[ -z $DEVTMPFS_NAME ] && DEVTMPFS_NAME=devtmpfs
-	if ! mountpoint /dev > /dev/null 2>&1; then
+	if mountpoint /dev > /dev/null 2>&1; then
 		umount -lf /dev
 	fi
 	mount -t devtmpfs ${DEVTMPFS_NAME} /dev
