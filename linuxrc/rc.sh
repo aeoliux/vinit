@@ -184,10 +184,12 @@ fi
 if [ -n "${SERVICES}" ]; then
 	if [ -d /var/log/services ]; then
 		echo "=> Saving old logs"
+		cd /var/log/services
 		for log in $(find . -type f -name '*.log'); do
 			[ -f "${log}.old" ] && rm -f "${log}.old"
 			mv "${log}" "${log}.old"
 		done
+		cd /
 	else
 		echo "=> Creating directory for services' logs"
 		mkdir -p /var/log/services
