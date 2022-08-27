@@ -18,10 +18,8 @@ int stopService(const char *pidfile) {
 	}
 
 	if (kill(pid, SIGKILL) == -1) {
-		if (kill(pid, SIGTERM) == -1) {
-			perror("vinit-daemonutil: failed to kill process");
-			return -1;
-		}
+		perror("vinit-daemonutil: failed to kill process");
+		return -1;
 	}
 
 	return 0;
