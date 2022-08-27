@@ -58,11 +58,26 @@ mount -t tmpfs run /run
 
 if grep -wq cgroup /proc/filesystems; then
 	if [ -d /sys/fs/cgroup ]; then
+		echo "=> Mounting cgroup filesystems"
 		mount -t cgroup cgroup /sys/fs/cgroup
-	else
-		mkdir -p /dev/cgroup
-		mount -t cgroup cgroup /dev/cgroup
 	fi
+fi
+if grep -wq efivarfs /proc/filesystems && [ -d /sys/firmware/efi/efivars ]; then
+	echo "=> Mounting efivarfs"
+	mount -t efivarfs efivarfs /sys/firmware/efi/efivars
+fi
+if grep -wq pstore /proc/filesystems && [ -d /sys/fs/pstore ]; then
+	echo "=> Mounting pstore"
+	mount -t pstore pstore /sys/fs/pstore
+fi
+if grep -wq securityfs /proc/filesystems; then
+	echo "=> Mounting securityfs"
+	[ ! -d /sys/kernel/security ] && mkdir -p /sys/kernel/security
+	mount -t securityfs securityfs /sys/kernel/security
+fi
+if grep -wq configfs /proc/filesystems && [ -d /sys/kernel/config ]; then
+	echo "=> Mounting configfs"
+	mount -t configfs configfs /sys/kernel/config
 fi
 
 echo "=> Linking stdin, stdout and stderr"
