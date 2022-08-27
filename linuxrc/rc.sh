@@ -56,11 +56,23 @@ if ! mountpoint /sys > /dev/null 2>&1; then
 fi
 mount -t tmpfs run /run
 
-if grep -wq cgroup /proc/filesystems; then
-	if [ -d /sys/fs/cgroup ]; then
-		echo "=> Mounting cgroup filesystems"
-		mount -t cgroup cgroup /sys/fs/cgroup
-	fi
+if grep -wq cgroup /proc/filesystems && [ -d /sys/fs/cgroup ]; then
+	echo "=> Mounting cgroup filesystems"
+	mount -t cgroup2 cgroup /sys/fs/cgroup
+
+	cd /sys/fs/cgroup
+	mkdir -p cpu && mount -t cgroup -o cpu cpu cpu
+	mkdir -p cpuacct && mount -t cgroup -o cpuacct cpuacct cpuacct
+	mkdir -p cpuset && mount -t cgroup -o cpuset cpuset cpuset
+	mkdir -p memory && mount -t cgroup -o memory memory memory
+	mkdir -p devices && mount -t cgroup -o devices devices devices
+	mkdir -p freezer && mount -t cgroup -o freezer freezer freezer
+	mkdir -p net_cls && mount -t cgroup -o net_cls net_cls net_cls
+	mkdir -p perf_event && mount -t cgroup -o perf_event perf_event perf_event
+	mkdir -p net_prio && mount -t cgroup -o net_prio net_prio net_prio
+	mkdir -p hugetlb && mount -t cgroup -o hugetlb hugetlb hugetlb
+	mkdir -p pids && mount -t cgroup -o pids pids pids
+	mkdir -p rdma && mount -t cgroup -o rdma rdma rdma
 fi
 if grep -wq efivarfs /proc/filesystems && [ -d /sys/firmware/efi/efivars ]; then
 	echo "=> Mounting efivarfs"
