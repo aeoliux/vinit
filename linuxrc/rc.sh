@@ -44,9 +44,12 @@ harderror() {
 echo "=> Mounting virtual filesystems"
 mount -n -t proc proc /proc
 
+[ -z $DEVTMPFS_NAME ] && DEVTMPFS_NAME=devtmpfs
 if ! mountpoint /dev > /dev/null 2>&1; then
-	mount -n -t devtmpfs devtmpfs /dev
+	umount -lf /dev
 fi
+mount -t devtmpfs ${DEVTMPFS_NAME} /dev
+
 mkdir -p /dev/pts /dev/shm
 mount -n -t devpts devpts /dev/pts
 mount -n -t tmpfs shm /dev/shm
