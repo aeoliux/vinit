@@ -23,26 +23,15 @@
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #SOFTWARE.
 #
+
+# elogind MUST BE STARTED BEFORE DBUS TO WORK
 set -e
 
 case "${1}" in
 	start)
-		if [ -f /run/elogind.pid ]; then
-			echo "elogind has already started" > /dev/stderr
-			exit 1
-		fi
-		if [ ! -f /run/dbus.pid ]; then
-			echo "	-> starting dbus"
-			/etc/rc.d/dbus start
-		fi
 		vinit-daemonutil -n elogind -S /lib/elogind/elogind
 		;;
 	stop)
-		if [ ! -f /run/elogind.pid ]; then
-			echo "elogind isn't running" > /dev/stderr
-			exit 1
-		fi
-		
 		vinit-daemonutil -X elogind
 		;;
 	restart)

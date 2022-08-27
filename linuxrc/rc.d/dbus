@@ -38,20 +38,12 @@ machineid() {
 
 case "${1}" in
 	start)
-		if [ -f /run/dbus.pid ]; then
-			echo "dbus has already been started" > /dev/stderr
-			exit 1
-		fi
 		machineid
 
 		mkdir -p /run/dbus
 		vinit-daemonutil -n dbus -S dbus-daemon -- --system --nofork
 		;;
 	stop)
-		if [ ! -f /run/dbus.pid ]; then
-			echo "dbus isn't running" > /dev/stderr
-			exit 1
-		fi
 		set +e
 		vinit-daemonutil -X dbus
 		set -e
@@ -63,10 +55,6 @@ case "${1}" in
 		${0} start
 		;;
 	reload)
-		if [ ! -f /run/dbus.pid ]; then
-			echo "dbus isn't running" > /dev/stderr
-			exit 1
-		fi
 		machineid
 		set +e
 		dbus-send --print-reply --system --type=method_call --dest=org.freedesktop.DBus / org.freedesktop.DBus.ReloadConfig
