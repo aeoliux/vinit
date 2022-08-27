@@ -99,10 +99,11 @@ if grep -wq configfs /proc/filesystems && [ -d /sys/kernel/config ]; then
 	mount -t configfs configfs /sys/kernel/config
 fi
 
-echo "=> Linking stdin, stdout and stderr"
+echo "=> Linking stdin, stdout, stderr and fd"
 ln -sf /proc/self/fd/0 /dev/stdin
 ln -sf /proc/self/fd/1 /dev/stdout
 ln -sf /proc/self/fd/2 /dev/stderr
+ln -sf /proc/self/fd /dev/fd
 
 if [ -x /etc/rc.conf ]; then
 	echo "=> Loading rc configuration"
