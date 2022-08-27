@@ -134,7 +134,7 @@ int main(int argc, char **argv) {
 			} else if (enpidfile) unlink(pidfile);
 			break;
         case check:
-			if (checkService(pidfile) == 1) {
+			if (checkService(pidfile)) {
 				puts("vinit-daemonutil: process is not running. Deleting pidfile");
 				if (enpidfile) unlink(pidfile);
 			}
