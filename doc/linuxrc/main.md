@@ -4,3 +4,4 @@
 - [Installation](install.md)
 - [linuxrc configuration](configuration.md)
 - [Network setup](networking.md)
+- [Logs](logs.md)
