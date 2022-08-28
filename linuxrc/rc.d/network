@@ -57,6 +57,15 @@ getitem() {
 	done
 }
 
+item() {
+	for i in ${1}; do
+		if [ "${i}" = "${2}" ]; then
+			return 0;
+		fi
+	done
+	return 1
+}
+
 case "${1}" in
 	start)
 		if [ -n "${USE_DHCP}" ]; then
@@ -69,6 +78,35 @@ case "${1}" in
 			fi
 		fi
 		for int in ${interfaces}; do
+			if [ ! -d /sys/class/net/${int} ]; then
+				echo "> Waiting 10 seconds for ${int} interface"
+				for count in 1 2 3 4 5 6 7 8 9 10; do
+					sleep 1
+					if [ -d /sys/class/net/${int} ]; then
+						break
+					fi
+				done
+				if [ -d /sys/class/net/${int} ]; then
+					echo "> ${int} network interface doesn't exists" > /dev/stderr
+					exit 1
+				fi
+			fi
+			if item ${wlan} ${int}; then
+				cfgfile=$(getitem ${wlan_config} ${int})
+				netdrv=$(getitem ${wlan_netdrv} ${int})
+				if [ -z "${cfg_file}" ]; then
+					echo "> Wireless LAN configuration is invalid" > /dev/stderr
+					exit 1
+				fi
+				if [ -z "${netdrv}" ]; then
+					echo "> WARNING: Wireless LAN driver hasn't been specified. Using 'wext'. Try setting 'wlan_netdrv' to 'nl80211' if wext fails" > /dev/stderr
+					netdrv=wext
+				fi
+
+				vinit-daemonutil -n wpa_supplicant_${int} -S vinit-logger -- -L /var/log/services/wpa_supplicant_${int}.log \
+					wpa_supplicant -- -i ${int} -D ${netdrv} -c ${cfgfile}
+			fi
+
 			type=$(gettype ${int})
 			case "${type}" in
 				static)
@@ -79,19 +117,7 @@ case "${1}" in
 						echo "> Network configuration is invalid" > /dev/stderr
 						exit 1
 					fi
-					if [ ! -d /sys/class/net/${int} ]; then
-						echo "> Waiting 10 seconds for ${int} interface"
-						for count in 1 2 3 4 5 6 7 8 9 10; do
-							sleep 1
-							if [ -d /sys/class/net/${int} ]; then
-								break
-							fi
-						done
-						if [ -d /sys/class/net/${int} ]; then
-							echo "> ${int} network interface doesn't exists" > /dev/stderr
-							exit 1
-						fi
-					fi
+					
 					echo "> Setting up static network configuration for ${int}"
 					ifconfig ${int} up
 					ifconfig ${int} ${ip} netmask ${netmask}
@@ -150,6 +176,11 @@ case "${1}" in
 					fi
 					;;
 			esac
+			if item ${wlan} ${int}; then
+				if [ -f "/run/wpa_supplicant_${int}.pid" ]; then
+					vinit-daemonutil -X wpa_supplicant_${int}
+				fi
+			fi
 		done
 		;;
 	restart)
