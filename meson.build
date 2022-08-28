@@ -12,7 +12,8 @@ add_global_arguments(cflags, language: 'c')
 initsrc = [
 	'init/inittab.c',
 	'init/main.c',
-	'init/util.c'
+	'init/util.c',
+	'init/sigchld.c'
 ]
 
 init = executable('init', initsrc, install: true)

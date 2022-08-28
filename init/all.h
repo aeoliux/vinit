@@ -51,4 +51,6 @@ int runShellCmd(char *const cmd);
 pid_t runAndFork(char *const cmd);
 pid_t respawnCmd(char *const cmd);
 
+void handle_sigchld();
+
 #define VERSION "0.1.0"
