@@ -8,7 +8,7 @@ vinit-daemonutil [ -P pidfile ] [ -n name ] [ -w ] [ -N ] [ -h ] [ -S command ||
 ```
 
 Options:
-- `-P pidfile` -> Specify path for file which contains process' PID,
+- `-P pidfile` -> Specify path for file which contains process' PID (default is `/run/<service name>.pid`),
 - `-n name` -> Specify name for service (default is first argument of command),
 - `-w` -> Wait until process finishes (default is forking),
 - `-N` -> Don't create pidfile,
