@@ -18,6 +18,7 @@ vinit-logger -L /var/log/vinit-lightdm.log lightdm -- --debug
 ```
 <br />
 vinit-logger can be executed via vinit-daemonutil:
+
 ```
 vinit-daemonutil -n lightdm -S vinit-logger -- -L /var/log/vinit-lightdm.log lightdm -- --debug
 ```
