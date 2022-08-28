@@ -52,11 +52,8 @@ sync
 echo "=> Disabling swap"
 swapoff -a
 
-echo "=> Unmounting filesystems"
-umount -a
-
-echo "=> Remounting rootfs as read-only"
-mount -o ro,remount /
+echo "=> Remounting all filesystems read-only"
+mount -a -f -o ro,remount
 
 if [ -w /proc/sysrq-trigger ]; then
 	echo "=> Sending SIGTERM to all processes"
