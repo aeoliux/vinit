@@ -14,7 +14,7 @@ Options:
 - `-N` -> Don't create pidfile,
 - `-h` -> Display help message.
 
-Operation:
+Operations:
 - `-S command` -> Starts process,
 - `-X` -> Kills process,
 - `-C` -> Checks if process is running. Unless it's running, deletes pidfile.
