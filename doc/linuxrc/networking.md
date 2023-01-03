@@ -94,7 +94,7 @@ routes="<interface>-<routes>"
 #### `dns_servers`
 Variable for defining a DNS servers.
 ```conf
-routes="<dns server> <dns server> ..."
+dns_servers="<dns server> <dns server> ..."
 ```
 
 ### Example `network` configuration
